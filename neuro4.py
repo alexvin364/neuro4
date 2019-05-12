@@ -261,7 +261,7 @@ def f_net(net, prev):
     else: return prev
     
 def eq_check(x,y):
-    for i in x:
+    for i in range(len(x)):
         if x[i]!=y[i]:
             return 0
     return 1
@@ -277,18 +277,19 @@ def Hopfield():
                 weights[j][k]+=first_learn[k]*first_learn[j]
                 weights[j][k]+=second_learn[k]*second_learn[j]
                 weights[j][k]+=third_learn[k]*third_learn[j]
+            else: weights[j][j]=0
     c = 0
+    net = [0 for i in range(SIZE2)]
     while not eq_check(y, y_prev):
-        #print(y)
-        net = [0 for i in range(SIZE2)]
+        print(y)
         for i in range(SIZE2):
+            net[i]=0
             y_prev[i] = y[i]
         for k in range(SIZE2):
             for j in range(SIZE2):
-                net[k]+=weights[j][k]*y_prev[j]
-            net[k] = f_net(net[k],y_prev[k])
-        for i in range(SIZE2):
-            y[i] = net[i]
+                net[k]+=weights[k][j]*y_prev[j]
+            y[k] = f_net(net[k],y_prev[k])
+        print(net)
         c+=1
     #print(c)
     for i in range(SIZE2):
